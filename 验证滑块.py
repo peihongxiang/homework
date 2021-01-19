@@ -114,7 +114,29 @@ class Login():
         ActionChains(self.driver).move_by_offset(distance, 1).perform()
         ActionChains(self.driver).release(on_element=element).perform()
 
+    def add_symbol(self):
+        #点击添加交易对
+        add_symbol_locator = (By.XPATH,"//*[@class='un-draggable']")
+        self.find_element(add_symbol_locator).click()
+        #添加第一对交易对
+        first_symbol_locator = (By.XPATH,"(//*[starts-with(@class,'currency')])[1]")
+        self.find_element(first_symbol_locator).click()
+        self.driver.find_element_by_css_selector("[type=button]").click()
+
+    def create_order(self):
+        first_buy_locator = (By.XPATH,"(//*[starts-with(@class,'dasboard-status')])[2]")
+        self.find_element(first_buy_locator).click()
+        comfirm_button_on_popup_locator = (By.CSS_SELECTOR,".justify-end button:nth-child(2)")
+        self.find_element(comfirm_button_on_popup_locator).click()
+
+    def find_element(self,loc):
+        return WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(loc))  # 显示等待
+        pass
+
 if __name__ == "__main__":
     b = Login()
     b.login()
+    time.sleep(10)
+    b.add_symbol()
+    b.create_order()
 
